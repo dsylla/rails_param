@@ -437,14 +437,21 @@ describe RailsParam::Param do
       end
 
       describe "in, within, range parameters" do
-        before(:each) { allow(controller).to receive(:params).and_return({"price" => "50"}) }
 
         it "succeeds in the range" do
+          allow(controller).to receive(:params).and_return({"price" => "50"})
           controller.param! :price, Integer, in: 1..100
           expect(controller.params["price"]).to eql(50)
         end
 
+        it "succeeds in the range with ignore_blank" do
+          allow(controller).to receive(:params).and_return({"price" => ""})
+          controller.param! :price, Integer, in: 1..100, ignore_blank: true
+          expect(controller.params["price"]).to eql('')
+        end
+
         it "raises outside the range" do
+          allow(controller).to receive(:params).and_return({"price" => "50"})
           expect { controller.param! :price, Integer, in: 51..100 }.to raise_error(RailsParam::Param::InvalidParameterError)
         end
       end
