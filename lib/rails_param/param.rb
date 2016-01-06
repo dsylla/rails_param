@@ -18,7 +18,7 @@ module RailsParam
       return unless params.member?(name) || check_param_presence?(options[:default]) || options[:required]
 
       begin
-        params[name] = coerce(params[name], type, options)
+        params[name] = coerce(params[name], type, options) unless options[:ignore_blank] && params[name].blank?
         params[name] = (options[:default].call if options[:default].respond_to?(:call)) || options[:default] if (params[name].nil? || (params[name].blank? and options[:ignore_blank])) and check_param_presence?(options[:default])
         params[name] = options[:transform].to_proc.call(params[name]) if params[name] and options[:transform]
         validate!(params[name], options)

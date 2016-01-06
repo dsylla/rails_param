@@ -109,6 +109,12 @@ describe RailsParam::Param do
         expect(controller.params["foo"]).to eql(DateTime.parse("2014-08-07T12:25:00.000+02:00"))
       end
 
+      it "does not convert if ignore_blank && blank? " do
+        allow(controller).to receive(:params).and_return({"foo" => ""})
+        controller.param! :foo, Date, ignore_blank: true
+        expect(controller.params["foo"]).to eql("")
+      end
+
       describe "BigDecimals" do
         it "converts to BigDecimal using default precision" do
           allow(controller).to receive(:params).and_return({"foo" => 12345.67890123456})
