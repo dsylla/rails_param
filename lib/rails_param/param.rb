@@ -119,7 +119,7 @@ module RailsParam
           when :is
             raise InvalidParameterError, "Parameter must be #{value}" unless param === value
           when :in, :within, :range
-            raise InvalidParameterError, "Parameter must be within #{value}" unless param.nil? || (params.blank? && options[:ignore_blank]) || case value
+            raise InvalidParameterError, "Parameter must be within #{value}" unless param.nil? || (param.blank? && options[:ignore_blank]) || case value
                                                                                                     when Range
                                                                                                       value.include?(param)
                                                                                                     else
